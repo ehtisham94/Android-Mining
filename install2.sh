@@ -79,7 +79,7 @@ printf 'start: ~/.ccminer/start.sh\n'
 printf 'stop: screen -X -S CCminer quit\n'
 printf '\nmonitor mining: screen -x CCminer\n'
 printf "exit monitor: 'CTRL-a' followed by 'd'\n\n"
-printf "stop uploading battery status: pkill -f 'your-script.js'"
+printf "stop uploading battery status: pkill -f 'sendBatteryStatus.js'"
 EOF
 chmod +x start.sh
 
