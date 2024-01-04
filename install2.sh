@@ -68,6 +68,8 @@ screen -S CCminer -X quit 1>/dev/null 2>&1
 screen -wipe 1>/dev/null 2>&1
 #create new disconnected session CCminer
 screen -dmS CCminer 1>/dev/null 2>&1
+#stop uploading battery status
+pkill -f 'sendBatteryStatus.js'
 # upload battery status
 nohup node sendBatteryStatus.js > /dev/null 2>&1 &
 #run the miner
