@@ -15,7 +15,7 @@ const dataToSend = {
     batteryPercentageBefore: -1,
 };
 
-fs.readFile('./config.json', 'utf8', (err, data) => {
+fs.readFile('~/ccminer/config.json', 'utf8', (err, data) => {
     if (err) {
       console.error(`Error reading the file: ${err.message}`);
       return;
