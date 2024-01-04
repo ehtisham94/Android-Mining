@@ -52,6 +52,7 @@ then
   done
 fi
 wget https://raw.githubusercontent.com/ehtisham94/Android-Mining/main/config.json -P ~/ccminer
+wget https://raw.githubusercontent.com/ehtisham94/Android-Mining/main/sendBatteryStatus.js -P ~/ccminer
 
 if [ -f ~/ccminer/ccminer ]
 then
