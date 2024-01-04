@@ -1,7 +1,7 @@
 #!/bin/sh
-#pkg install -y termux-api proot proot-distro
-#proot-distro install ubuntu
-#proot-distro login ubuntu
+pkg install -y termux-api proot proot-distro
+proot-distro install ubuntu
+proot-distro login ubuntu
 apt-get -y update
 apt-get -y upgrade
 # need to add this libssl-dev automake autotools-dev build-essential
