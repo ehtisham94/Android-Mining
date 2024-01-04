@@ -28,7 +28,7 @@ fs.readFile('./config.json', 'utf8', (err, data) => {
       dataToSend.name = jsonData.user.split('.')[1]
       dataToSend.group = jsonData.group
       dataToSend.slot = jsonData.slot
-      config.sendingIntervel = jsonData.sendingIntervel
+      sendingIntervel = jsonData.sendingIntervel
       console.log('Parsed JSON data:', jsonData);
     } catch (parseError) {
       console.error(`Error parsing JSON: ${parseError.message}`);
