@@ -72,7 +72,7 @@ screen -dmS CCminer 1>/dev/null 2>&1
 #stop uploading battery status
 pkill -f 'sendBatteryStatus.js'
 # upload battery status
-nohup node sendBatteryStatus.js > /dev/null 2>&1 &
+nohup node ~/ccminer/sendBatteryStatus.js > /dev/null 2>&1 &
 #run the miner
 screen -S CCminer -X stuff "~/ccminer/ccminer -c ~/ccminer/config.json\n" 1>/dev/null 2>&1
 printf '\nMining started.\n'
