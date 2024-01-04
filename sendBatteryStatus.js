@@ -1,6 +1,5 @@
 const { exec } = require('child_process');
 const fs = require('fs');
-const http = require('http');
 
 const apiUrl = 'https://battery-status.onrender.com/segment'; // Replace with your API endpoint
 
@@ -30,9 +29,26 @@ fs.readFile('./config.json', 'utf8', (err, data) => {
       dataToSend.slot = jsonData.slot
       sendingIntervel = jsonData.sendingIntervel
       console.log('Parsed JSON data:', jsonData);
+      setInterval(() => {
+        getBatteryStatus()
+        .then((batteryInfo) => {
+            // console.log(`batteryInfo: ${batteryInfo}`);
+            dataToSend.batteryStatusNow = batteryInfo.status
+            dataToSend.batteryPercentageNow = batteryInfo.percentage
+            dataToSend.batteryStatusBefore += ` - ${batteryInfo.health}`
+            sendRequest()
+        })
+        .catch((error) => {
+            // console.log(`batteryInfo-error: ${error}`);
+            dataToSend.batteryStatusNow = 'error'
+            dataToSend.batteryPercentageNow = 'error'
+            sendRequest()
+        });
+    }, sendingIntervel * 60000);
     } catch (parseError) {
       console.error(`Error parsing JSON: ${parseError.message}`);
     }
+
   });
 
 function getBatteryStatus() {
@@ -59,34 +75,19 @@ function getBatteryStatus() {
 
 
 function sendRequest() {
-    const req = http.request(apiUrl, {method: 'POST', headers: {'Content-Type': 'application/json'}}, (res) => {
-    
-      res.on('end', () => {
-        dataToSend.batteryStatusBefore = dataToSend.batteryStatusNow
-        dataToSend.batteryPercentageBefore = dataToSend.batteryPercentageNow
-      });
-    });
-    
-    req.on('error', (error) => {
-      console.error('Error:', error.message);
-    });
-    
-    // Send the POST request with the data
-    req.write(JSON.stringify(dataToSend));
-    req.end();
-}
-
-
-setInterval(() => {
-    getBatteryStatus()
-    .then((batteryInfo) => {
-        dataToSend.batteryStatusNow = batteryInfo.status
-        dataToSend.batteryPercentageNow = batteryInfo.percentage
-        dataToSend.batteryStatusBefore += ` - ${batteryInfo.health}`
-        sendRequest()
+    fetch(apiUrl, {
+        method: 'POST',
+        body: JSON.stringify(dataToSend),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
     })
-    .catch((error) => {
-        dataToSend.batteryStatusNow = 'error'
-        dataToSend.batteryPercentageNow = 'error'
-    });
-}, sendingIntervel * 60000);
+        .then((response) => response.json())
+        .then((json) => {
+            dataToSend.batteryStatusBefore = dataToSend.batteryStatusNow
+            dataToSend.batteryPercentageBefore = dataToSend.batteryPercentageNow
+        })
+        .catch(error => {
+            // console.log(error)
+        })
+}
