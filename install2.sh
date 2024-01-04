@@ -1,5 +1,5 @@
 #!/bin/sh
-pkg install termux-api proot proot-distro
+pkg -y install termux-api proot proot-distro
 proot-distro install ubuntu
 proot-distro login ubuntu
 apt-get -y update
