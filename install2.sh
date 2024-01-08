@@ -1,10 +1,10 @@
 #!/bin/sh
 pkg install -y termux-api proot proot-distro && proot-distro install ubuntu && proot-distro login ubuntu && apt-get -y update && apt-get -y upgrade
 # need to add this libssl-dev automake autotools-dev build-essential
-apt-get install -y libcurl4-openssl-dev libjansson-dev libomp-dev git screen nano jq wget nodejs
-wget http://ports.ubuntu.com/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_arm64.deb
-dpkg -i libssl1.1_1.1.0g-2ubuntu4_arm64.deb
-rm libssl1.1_1.1.0g-2ubuntu4_arm64.deb
+&& apt-get install -y libcurl4-openssl-dev libjansson-dev libomp-dev git screen nano jq wget nodejs
+&& wget http://ports.ubuntu.com/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_arm64.deb
+&& dpkg -i libssl1.1_1.1.0g-2ubuntu4_arm64.deb
+&& rm libssl1.1_1.1.0g-2ubuntu4_arm64.deb
 if [ ! -d ~/.ssh ]
 then
   mkdir ~/.ssh
