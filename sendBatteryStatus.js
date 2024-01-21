@@ -131,7 +131,7 @@ async function startMining() {
   }
 }
 
-async function executeCommandWithTimeout(command, timeout=3000) {
+async function executeCommandWithTimeout(command, timeout=7000) {
   // console.log('executeCommandWithTimeout ');
   return new Promise(async (resolve, reject) => {
     // console.log('start executing command');
