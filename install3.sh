@@ -1,6 +1,8 @@
 #!/bin/sh
-pkg update -y && pkg upgrade -y
-pkg install -y libjansson wget nano screen nodejs termux-api
+# pkg update -y && pkg upgrade -y
+# pkg install -y libjansson wget nano screen nodejs termux-api
+yes | pkg update && pkg upgrade
+yes | pkg install libjansson wget nano screen nodejs termux-api
 
 if [ ! -d ~/ccminer ]
 then
