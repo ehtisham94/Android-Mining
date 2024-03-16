@@ -11,7 +11,7 @@ let configData = {
   baseUrl: 'https://battery-status.onrender.com',
   configDataUrl: 'https://raw.githubusercontent.com/ehtisham94/mining-config/main/config.json',
   name: '',
-  group: '',
+  group: -1,
   slot: -1,
   pools: [
     {
@@ -32,6 +32,7 @@ let configData = {
   "algo": "verus",
   "threads": 8,
   "cpu-priority": 1,
+  "cpu-affinity": -1,
   "retry-pause": 5,
   "api-allow": "192.168.0.0/16",
   "api-bind": "0.0.0.0:4068",
@@ -44,6 +45,7 @@ const batteryData = {
   batteryPercentageBefore: -1,
   batteryHealth: '',
   ipAddress: '',
+  isMining: false,
 };
 
 
@@ -67,6 +69,17 @@ async function getConfigData() {
   }
 }
 
+async function startMining(status) {
+  try {
+    // console.log('startint Mining', status);
+    let commandOutput = await executeCommandWithTimeout(status ? './ccminer/start.sh' : 'screen -X -S CCminer quit')
+    if (commandOutput.success) batteryData.isMining = status;
+    // console.log('Mining started', status);
+  } catch (error) {
+    // console.log('Error in startMining:', error);
+  }
+}
+
 async function updateConfigDataAndStartSession(jsonData) {
   try {
     // console.log('check version');
@@ -74,7 +87,7 @@ async function updateConfigDataAndStartSession(jsonData) {
       // console.log('version changed');
       configData = {...configData, ...jsonData}
       configData.user += `.${configData.name}`
-      configData.script = `ccminer -a ${configData.algo} -t ${configData.threads} -o ${configData.pools[0].url} -u ${configData.user}`
+      configData.script = `ccminer -a ${configData.algo} -t ${configData.threads} -o ${configData.pools.find(pool => pool.disabled == 0)?.url} -u ${configData.user}`
       const jsonString = JSON.stringify(configData, null, 2);
       // console.log('updating config file');
       await fs.writeFile('./ccminer/config.json', jsonString, 'utf-8');
@@ -82,56 +95,54 @@ async function updateConfigDataAndStartSession(jsonData) {
     }
     // console.log('starting session');
     startUploading()
-    startMining()
+    startMining(true)
   } catch (error) {
     // console.log('Error in updateConfigDataAndStartSession:', error);
+  }
+}
+
+async function uploading() {
+  try {
+    // console.log('execute command "termux-battery-status"');
+    let commandOutput = await executeCommandWithTimeout('termux-battery-status')
+    // console.log('command "termux-battery-status" executed: ', commandOutput);
+    if (commandOutput.success) {
+      let batteryInfo = JSON.parse(commandOutput.data)
+      // console.log(`parsed commandOutput.data: `, batteryInfo);
+      batteryData.batteryStatusNow = batteryInfo.status
+      batteryData.batteryPercentageNow = batteryInfo.percentage
+      batteryData.batteryHealth = batteryInfo.health
+      if (batteryInfo.percentage < 15 && batteryData.isMining) startMining(false);
+      else if (batteryInfo.percentage > 15 && !batteryData.isMining) startMining(true);
+    } else {
+      batteryData.batteryStatusNow = 'error'
+      batteryData.batteryPercentageNow = -1
+      batteryData.batteryHealth = 'error'
+    }
+    batteryData.ipAddress = await getIpAddress()
+    uploadRequest()
+  } catch (error) {
+    // console.log('Error in uploading:', error);
   }
 }
 
 function startUploading() {
   try {
     // console.log('startUploading');
-    interval = setInterval(async () => {
-      try {
-        // console.log('execute command "termux-battery-status"');
-        let commandOutput = await executeCommandWithTimeout('termux-battery-status')
-        // console.log('command "termux-battery-status" executed: ', commandOutput);
-        if (commandOutput.success) {
-          let batteryInfo = JSON.parse(commandOutput.data)
-          // console.log(`parsed commandOutput.data: `, batteryInfo);
-          batteryData.batteryStatusNow = batteryInfo.status
-          batteryData.batteryPercentageNow = batteryInfo.percentage
-          batteryData.batteryHealth = batteryInfo.health
-        } else {
-          batteryData.batteryStatusNow = 'error'
-          batteryData.batteryPercentageNow = -1
-          batteryData.batteryHealth = 'error'
-        }
-        batteryData.ipAddress = await getIpAddress()
-        uploadRequest()
-      } catch (error) {
-        // console.log('Error in uploading interval:', error);
-      }
-    }, configData.uploadingIntervel * 60000);
+    // console.log('start initial uploading interval');
+    let i = 0, initInterval = setInterval(() => {
+      uploading()
+      i += 1
+      if (i > 10) clearInterval(initInterval);
+    }, 20000);
+    // console.log('start main uploading interval');
+    interval = setInterval(uploading, configData.uploadingIntervel * 60000);
   } catch (error) {
     // console.log('Error in startUploading:', error);
   }
 }
 
-async function startMining() {
-  try {
-    // console.log('starting settimeout for start Mining');
-    setTimeout(async () => {
-      // console.log('startint Mining');
-      await executeCommandWithTimeout('./ccminer/start.sh')
-      // console.log('Mining started');
-    }, 100);
-  } catch (error) {
-    // console.log('Error in startMining:', error);
-  }
-}
-
-async function executeCommandWithTimeout(command, timeout=60000) {
+async function executeCommandWithTimeout(command, timeout=300000) {
   // console.log('executeCommandWithTimeout ');
   return new Promise(async (resolve, reject) => {
     // console.log('start executing command');
@@ -220,7 +231,7 @@ async function uploadRequest() {
         // console.log('config version changed');
         clearInterval(interval)
         // console.log('interval cleared');
-        await executeCommandWithTimeout('screen -X -S CCminer quit')
+        await startMining(false)
         // console.log('mining stopped and call updateConfigDataAndStartSession');
         updateConfigDataAndStartSession(jsonData.data)
       }
