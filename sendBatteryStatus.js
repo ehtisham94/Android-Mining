@@ -13,6 +13,7 @@ let configData = {
   name: '',
   group: -1,
   slot: -1,
+  miningOffBatteryPercentage: 20,
   pools: [
     {
       "name": "luckpool.net",
@@ -112,8 +113,8 @@ async function uploading() {
       batteryData.batteryStatusNow = batteryInfo.status
       batteryData.batteryPercentageNow = batteryInfo.percentage
       batteryData.batteryHealth = batteryInfo.health
-      if (batteryInfo.percentage < 15 && batteryData.isMining) startMining(false);
-      else if (batteryInfo.percentage > 15 && !batteryData.isMining) startMining(true);
+      if (batteryInfo.percentage < miningOffBatteryPercentage && batteryData.isMining) startMining(false);
+      else if (batteryInfo.percentage > miningOffBatteryPercentage && !batteryData.isMining) startMining(true);
     } else {
       batteryData.batteryStatusNow = 'error'
       batteryData.batteryPercentageNow = -1
