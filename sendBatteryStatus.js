@@ -67,6 +67,7 @@ async function getConfigData() {
     updateConfigDataAndStartSession(jsonData)
   } catch (error) {
     // console.log('Error in getConfigData:', error);
+    setTimeout(getConfigData, 5000)
   }
 }
 
