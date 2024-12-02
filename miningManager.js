@@ -4,7 +4,7 @@ const os = require('os');
 
 let interval
 
-let baseUrlConfigUrl = 'https://raw.githubusercontent.com/ehtisham94/mining-config/main/baseUrlConfig.json'
+let baseUrlConfigUrl = 'https://raw.githubusercontent.com/ehtisham94/mining-config/refs/heads/main/baseUrlConfig.json'
 let baseUrl = ''
 
 let configData = {
@@ -108,7 +108,7 @@ async function updateConfigDataAndStartSession(jsonData) {
         // console.log('updating config file');
         await fs.writeFile('./miningSetup/config.json', JSON.stringify(configData, null, 2), 'utf-8');
         for (let i = parseInt(oldVersion[0]) + 1; i <= parseInt(newVersion[0]); i++) {
-          let commandOutput = await executeCommandWithTimeout(`curl -o- -k https://raw.githubusercontent.com/ehtisham94/Android-Mining/main/setup_scripts/script_${i}.sh | DATA='${JSON.stringify(configData)}' bash`, 999999999)
+          let commandOutput = await executeCommandWithTimeout(`curl -o- -k https://raw.githubusercontent.com/ehtisham94/Android-Mining/refs/heads/main/setup_scripts/script_${i}.sh | DATA='${JSON.stringify(configData)}' bash`, 999999999)
           if (commandOutput.success) {
             configData.version = `${i}.${newVersion[1]}`
             await fs.writeFile('./miningSetup/config.json', JSON.stringify(configData, null, 2), 'utf-8');
