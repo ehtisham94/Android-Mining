@@ -49,7 +49,7 @@ fi
 cd ~/miningSetup/ccminer
 
 wget https://github.com/Oink70/CCminer-ARM-optimized/releases/download/v3.8.3-4/ccminer-3.8.3-4_ARM -P ~/miningSetup/ccminer -O ~/miningSetup/ccminer/ccminerOink70
-wget https://raw.githubusercontent.com/Darktron/pre-compiled/generic/ccminer -P ~/miningSetup/ccminer -O ~/miningSetup/ccminer/ccminerDarktron
+wget https://raw.githubusercontent.com/Darktron/pre-compiled/$mapped_value/ccminer -P ~/miningSetup/ccminer -O ~/miningSetup/ccminer/ccminerDarktron
 
 cat << EOF > ~/miningSetup/ccminer/startOink70.sh
 #!/bin/sh
