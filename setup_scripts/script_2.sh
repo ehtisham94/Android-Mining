@@ -2,12 +2,12 @@
 
 set -e  # Exit immediately if a command exits with a non-zero status
 
-# Update and upgrade the system without manual confirmation
-DEBIAN_FRONTEND=noninteractive apt-get -y update
-DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
+# # Update and upgrade the system without manual confirmation
+# DEBIAN_FRONTEND=noninteractive apt-get -y update
+# DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
 
-# Install necessary development libraries and utilities
-apt-get install -y libjansson
+# # Install necessary development libraries and utilities
+# apt-get install -y libjansson
 
 rm ~/miningSetup/ccminer/startOink70.sh ~/miningSetup/ccminer/startDarktron.sh
 
