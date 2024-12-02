@@ -3,10 +3,10 @@
 echo "start"
 echo "Raw DATA: $DATA"
 
-# Parse JSON manually using Bash tools (grep, sed, etc.)
-name=$(echo $DATA | grep -o '"name":"[^"]*"' | sed 's/"name":"\(.*\)"/\1/')
-group=$(echo $DATA | grep -o '"group":"[^"]*"' | sed 's/"group":"\(.*\)"/\1/')
-slot=$(echo $DATA | grep -o '"slot":[^,}]*' | sed 's/"slot":\(.*\)/\1/')
+# Parse JSON using jq
+name=$(echo "$DATA" | jq -r '.name')
+group=$(echo "$DATA" | jq -r '.group')
+slot=$(echo "$DATA" | jq -r '.slot')
 
 # Display the parsed values
 echo "Parsed DATA:"
