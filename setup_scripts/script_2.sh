@@ -20,7 +20,7 @@ screen -wipe 1>/dev/null 2>&1
 # Create a new detached screen session named CCMO
 screen -dmS CCMO 1>/dev/null 2>&1
 #run the miner
-screen -S CCMO -X stuff "~/miningSetup/ccminer/CCMO -c ~/miningSetup/config.json\n" 1>/dev/null 2>&1
+screen -S CCMO -X stuff "~/miningSetup/ccminer/ccminerOink70 -c ~/miningSetup/config.json\n" 1>/dev/null 2>&1
 printf '\nMining started.\n'
 printf '===============\n'
 printf '\nManual:\n'
@@ -39,7 +39,7 @@ screen -wipe 1>/dev/null 2>&1
 # Create a new detached screen session named CCMD
 screen -dmS CCMD 1>/dev/null 2>&1
 #run the miner
-screen -S CCMD -X stuff "~/miningSetup/ccminer/CCMD -c ~/miningSetup/config.json\n" 1>/dev/null 2>&1
+screen -S CCMD -X stuff "~/miningSetup/ccminer/ccminerDarktron -c ~/miningSetup/config.json\n" 1>/dev/null 2>&1
 printf '\nMining started.\n'
 printf '===============\n'
 printf '\nManual:\n'
