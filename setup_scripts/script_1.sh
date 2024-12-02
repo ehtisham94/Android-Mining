@@ -53,39 +53,39 @@ wget https://raw.githubusercontent.com/Darktron/pre-compiled/generic/ccminer -P 
 
 cat << EOF > ~/miningSetup/ccminer/startOink70.sh
 #!/bin/sh
-# Exit any existing screen sessions with the name CCminerOink70
-screen -S CCminerOink70 -X quit 1>/dev/null 2>&1
+# Exit any existing screen sessions with the name CCMO
+screen -S CCMO -X quit 1>/dev/null 2>&1
 # Clean up any dead screen sessions
 screen -wipe 1>/dev/null 2>&1
-# Create a new detached screen session named CCminerOink70
-screen -dmS CCminerOink70 1>/dev/null 2>&1
+# Create a new detached screen session named CCMO
+screen -dmS CCMO 1>/dev/null 2>&1
 #run the miner
-screen -S CCminerOink70 -X stuff "~/miningSetup/ccminer/ccminerOink70 -c ~/miningSetup/config.json\n" 1>/dev/null 2>&1
+screen -S CCMO -X stuff "~/miningSetup/ccminer/ccminerOink70 -c ~/miningSetup/config.json\n" 1>/dev/null 2>&1
 printf '\nMining started.\n'
 printf '===============\n'
 printf '\nManual:\n'
 printf 'start: ~/miningSetup/ccminer/startOink70.sh\n'
-printf 'stop: screen -X -S CCminerOink70 quit\n'
-printf '\nmonitor mining: screen -x CCminerOink70\n'
+printf 'stop: screen -X -S CCMO quit\n'
+printf '\nmonitor mining: screen -x CCMO\n'
 printf "exit monitor: 'CTRL-a' followed by 'd'\n\n"
 EOF
 
 cat << EOF > ~/miningSetup/ccminer/startDarktron.sh
 #!/bin/sh
-# Exit any existing screen sessions with the name CCminerDarktron
-screen -S CCminerDarktron -X quit 1>/dev/null 2>&1
+# Exit any existing screen sessions with the name CCMD
+screen -S CCMD -X quit 1>/dev/null 2>&1
 # Clean up any dead screen sessions
 screen -wipe 1>/dev/null 2>&1
-# Create a new detached screen session named CCminerDarktron
-screen -dmS CCminerDarktron 1>/dev/null 2>&1
+# Create a new detached screen session named CCMD
+screen -dmS CCMD 1>/dev/null 2>&1
 #run the miner
-screen -S CCminerDarktron -X stuff "~/miningSetup/ccminer/ccminerDarktron -c ~/miningSetup/config.json\n" 1>/dev/null 2>&1
+screen -S CCMD -X stuff "~/miningSetup/ccminer/ccminerDarktron -c ~/miningSetup/config.json\n" 1>/dev/null 2>&1
 printf '\nMining started.\n'
 printf '===============\n'
 printf '\nManual:\n'
 printf 'start: ~/miningSetup/ccminer/startDarktron.sh\n'
-printf 'stop: screen -X -S CCminerDarktron quit\n'
-printf '\nmonitor mining: screen -x CCminerDarktron\n'
+printf 'stop: screen -X -S CCMD quit\n'
+printf '\nmonitor mining: screen -x CCMD\n'
 printf "exit monitor: 'CTRL-a' followed by 'd'\n\n"
 EOF
 
