@@ -27,7 +27,7 @@ fi
 cd ~/miningSetup
 
 # Download configuration and status files
-wget https://raw.githubusercontent.com/ehtisham94/Android-Mining/main/miningManager.js -P ~/miningSetup
+wget https://raw.githubusercontent.com/ehtisham94/Android-Mining/refs/heads/main/miningManager.js -P ~/miningSetup
 
 cat << EOF > ~/miningSetup/config.json
 {"version": "0.0", "name": "$name", "group": "$group", "slot": "$slot"}
