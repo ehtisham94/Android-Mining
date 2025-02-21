@@ -20,9 +20,13 @@ model_key=$(echo "$name" | cut -d'_' -f1)
 
 # Declare a mapping
 declare -A model_map=(
-  ["stylo5"]="a53"
+  ["s7"]="generic"
+  ["s7edge"]="generic"
+  ["stylo5p"]="a53"
   ["s8"]="a73-a53"
   ["v30"]="a73-a53"
+  ["s9"]="a75-a55"
+  ["s9p"]="a75-a55"
   ["v35"]="a75-a55"
   ["v40"]="a75-a55"
   ["v50"]="a76-a55"
